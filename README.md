@@ -67,12 +67,12 @@ python $MY_GIT_DIR/run_pub_rag.py \
 **A generated response from llama3 using PubRAG (took ~5 minutes for 2 papers on a CPU):**
 
 > Unfortunately, the provided text does not explicitly mention the cell type accuracy of CellSighter model across all platforms. However, it describes several experiments and evaluations conducted to assess the performance of the CellSighter model.
-
-> One such evaluation is presented in Supplementary Fig. 3H-J, where the model was trained on two sets of labels (lineage classes "DCs" and "Macrophages", as well as subsets of these classes) and evaluated on a test set. This suggests that the cell type accuracy may vary depending on the specific classification task or platform used.
-
-> To provide more accurate information, I would recommend consulting the original research article or contacting the authors directly to inquire about the cell type accuracy achieved by the CellSighter model across all platforms.
-
-> (Amitay et al., 2023)
+> 
+One such evaluation is presented in Supplementary Fig. 3H-J, where the model was trained on two sets of labels (lineage classes "DCs" and "Macrophages", as well as subsets of these classes) and evaluated on a test set. This suggests that the cell type accuracy may vary depending on the specific classification task or platform used.
+>
+To provide more accurate information, I would recommend consulting the original research article or contacting the authors directly to inquire about the cell type accuracy achieved by the CellSighter model across all platforms.
+> 
+(Amitay et al., 2023)
 
 
 > [!NOTE]
@@ -88,13 +88,13 @@ python $MY_GIT_DIR/run_pub_rag.py \
 
 **Output:**
 
-&nbsp;&nbsp;*Based on the provided text, CellSighter is a model that classifies cells into different lineages or subsets using membrane protein signals. It takes into account various factors such as image resolution, normalization methods, and the presence of functional proteins to make accurate predictions.*
-
-&nbsp;&nbsp;*To be more specific, CellSighter was trained on images of cell membranes with CD4 and CD20 signals removed to avoid any confounding effects. The model was then tested using different input sizes, normalization methods, and over-clustering techniques to improve its performance.*
-
-&nbsp;&nbsp;*In summary, CellSighter is a computational tool that uses machine learning algorithms to classify cells into different lineages or subsets based on their membrane protein signals.*
-
-&nbsp;&nbsp;*(Amitay et al., 2023)*
+> Based on the provided text, CellSighter is a model that classifies cells into different lineages or subsets using membrane protein signals. It takes into account various factors such as image resolution, normalization methods, and the presence of functional proteins to make accurate predictions.
+>
+To be more specific, CellSighter was trained on images of cell membranes with CD4 and CD20 signals removed to avoid any confounding effects. The model was then tested using different input sizes, normalization methods, and over-clustering techniques to improve its performance.
+>
+In summary, CellSighter is a computational tool that uses machine learning algorithms to classify cells into different lineages or subsets based on their membrane protein signals.
+>
+(Amitay et al., 2023)
 
 
 > [!NOTE]
