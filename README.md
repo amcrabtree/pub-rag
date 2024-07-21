@@ -1,6 +1,6 @@
 # PubRAG
 
-PubRAG is a RAG using your own folder of publication PDFs to help you answer questions and cite sources. This app was made because large language models (LLMs) like ChatGPT and others do not provide accurate citations for their responses and instead hallucinate them (i.e. they make up something random that sounds legit). 
+PubRAG is a RAG using your own folder of publication PDFs to help you answer questions and cite sources. This app was made because large language models (LLMs) like ChatGPT and others do not provide accurate citations for their responses and instead hallucinate them (i.e. they make up something random that sounds legit). The current version calculates a Jaccard similarity for finding the best match between the user prompt and the publication corpus, which takes longer than more modern techniques like using a vector database. This will likely be the next step in this project. Props to learnbybuilding.ai for providing a great [walkthrough](https://learnbybuilding.ai/tutorials/rag-from-scratch) and code to get me going. 
 
 
 ## Environment
@@ -14,11 +14,13 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 ## Data
 
-Download data to your corpus folder like the following (if using Ubuntu):
+**Option 1:** Use your own folder of PDF files and save the path as the bash variable `PDF_DIR`.
+
+**Option 2:** Download test data to a folder like the following (if using Ubuntu):
 
 ```sh
-PDF_DIR="test/corpus"
-mkdir -p $PDF_DIR
+PDF_DIR="test/my_pdf_files"
+mkdir -p $PDF_DIR test/corpus
 wget https://www.nature.com/articles/s41467-023-44188-w.pdf -P $PDF_DIR
 wget https://www.nature.com/articles/s41467-023-40066-7.pdf -P $PDF_DIR
 ```
@@ -38,7 +40,7 @@ Create a text file for each paper in corpus with `save_txt_file.py` script:
 ```sh
 for pdf_file in ${PDF_DIR}/*.pdf; do
   echo Processing: $(basename "$pdf_file")
-  python $MY_GIT_DIR/save_txt_file.py "$pdf_file"
+  python $MY_GIT_DIR/save_txt_file.py "$pdf_file" test/corpus
 done
 ```
 
@@ -55,7 +57,7 @@ ollama pull llama3
 
 ### Query
 
-Now you can run the query script. For example:
+Now you can run the query script. Note that it pulls publication text from the `test/corpus` folder. 
 
 ```sh
 python $MY_GIT_DIR/run_pub_rag.py \
@@ -63,7 +65,7 @@ python $MY_GIT_DIR/run_pub_rag.py \
 ```
 
 
-A generated response from llama3 using PubRAG (took ~5 minutes for 2 papers on CPU):
+A generated response from llama3 using PubRAG (took ~5 minutes for 2 papers on a CPU):
 
         Unfortunately, the provided text does not explicitly mention the cell type accuracy of CellSighter model across all platforms. However, it describes several experiments and evaluations conducted to assess the performance of the CellSighter model.
 
