@@ -64,24 +64,17 @@ python $MY_GIT_DIR/run_pub_rag.py \
   "What cell type accuracy did the CellSighter model achieve across all platforms?"
 ```
 
+**A generated response from llama3 using PubRAG (took ~5 minutes for 2 papers on a CPU):**
 
-
-<ul> <li style="list-style-type: none;">
-<b>
-A generated response from llama3 using PubRAG (took ~5 minutes for 2 papers on a CPU):
-</b>
-
-  <i>
-  Unfortunately, the provided text does not explicitly mention the cell type accuracy of CellSighter model across all platforms. However, it describes several experiments and evaluations conducted to assess the performance of the CellSighter model.*
+<p class="indented"> <i>
+  Unfortunately, the provided text does not explicitly mention the cell type accuracy of CellSighter model across all platforms. However, it describes several experiments and evaluations conducted to assess the performance of the CellSighter model.
 
   One such evaluation is presented in Supplementary Fig. 3H-J, where the model was trained on two sets of labels (lineage classes "DCs" and "Macrophages", as well as subsets of these classes) and evaluated on a test set. This suggests that the cell type accuracy may vary depending on the specific classification task or platform used.
 
   To provide more accurate information, I would recommend consulting the original research article or contacting the authors directly to inquire about the cell type accuracy achieved by the CellSighter model across all platforms.
 
   (Amitay et al., 2023)
-  </i> 
-</li> </ul>
-
+</i> </p>
 
 > [!NOTE]
 > Well, the Jaccard index did find the correct citation, but llama3 somehow missed the introduction that states the model's accuracy. Maybe it doesn't do well with interpreting numeric values.
