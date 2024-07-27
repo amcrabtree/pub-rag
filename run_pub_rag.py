@@ -4,7 +4,6 @@
 
     Code adapted from https://learnbybuilding.ai/tutorials/rag-from-scratch
 """
-
 import requests
 import json
 import sys
@@ -13,6 +12,8 @@ import os
 
 
 def jaccard_similarity(query, document):
+    """ Calculate jaccard similarity between words
+    """
     query = query.lower().split(" ")
     document = document.lower().split(" ")
     intersection = set(query).intersection(set(document))
@@ -21,6 +22,8 @@ def jaccard_similarity(query, document):
 
 
 def return_response(user_input: str, pub_path_list: list):
+    """ Returns highest relevant publication and citation info.
+    """
     similarities = []
     for pub_file in pub_path_list:
         with open(pub_file, "r") as file:
@@ -66,7 +69,7 @@ if __name__=="__main__":
     full_response = []
     url = 'http://localhost:11434/api/generate'
     data = {
-        "model": "llama3",
+        "model": "llama3.1",
         "prompt": prompt.format(user_input=user_input, best_pub_text=best_pub_text, citation=citation)
     }
     headers = {'Content-Type': 'application/json'}

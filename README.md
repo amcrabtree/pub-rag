@@ -40,7 +40,7 @@ Create a text file for each paper in corpus with `save_txt_file.py` script:
 ```sh
 for pdf_file in ${PDF_DIR}/*.pdf; do
   echo Processing: $(basename "$pdf_file")
-  python $MY_GIT_DIR/save_txt_file.py "$pdf_file" test/corpus
+  python save_txt_file.py "$pdf_file" test/corpus
 done
 ```
 
@@ -52,7 +52,7 @@ done
 In order to use the LLM, you'll need to pull it from the web. 
 
 ```sh
-ollama pull llama3
+ollama pull llama3.1
 ```
 
 ### Query
@@ -60,7 +60,7 @@ ollama pull llama3
 Now you can run the query script. Note that it pulls publication text from the `test/corpus` folder. 
 
 ```sh
-python $MY_GIT_DIR/run_pub_rag.py \
+python run_pub_rag.py \
   "What cell type accuracy did the CellSighter model achieve across all platforms?"
 ```
 
