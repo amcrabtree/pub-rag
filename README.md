@@ -82,7 +82,7 @@ python run_pub_rag.py \
 Another query:
 
 ```sh
-python $MY_GIT_DIR/run_pub_rag.py \
+python run_pub_rag.py \
   "What does CellSighter do?"
 ```
 
