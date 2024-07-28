@@ -26,17 +26,11 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 ```sh
 PDF_DIR="test/my_pdf_files"
-mkdir -p $PDF_DIR test/corpus
+mkdir -p $PDF_DIR
 wget https://www.nature.com/articles/s41467-023-44188-w.pdf -P $PDF_DIR
 wget https://www.nature.com/articles/s41467-023-40066-7.pdf -P $PDF_DIR
 ```
 
-Make sure to rename each file so that the Author name is the first word in the filename and there is a year present. This format enables citation parsing. For example: `Shaban 2023 - MAPS.txt`
-
-```sh
-mv $PDF_DIR/s41467-023-44188-w.pdf "$PDF_DIR/Shaban 2023 - MAPS.pdf"
-mv $PDF_DIR/s41467-023-40066-7.pdf "$PDF_DIR/Amitay 2023 - CellSighter.pdf"
-```
 
 ## Prepare database and index files
 
@@ -88,7 +82,6 @@ python run_pub_rag.py ./test/research_papers.db ./test/faiss_index.index \
 - [ ] Figure out ways to make this framework run faster on a CPU
 
 
-* * *
 
 ## Acknowledgements
 
