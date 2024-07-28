@@ -3,74 +3,74 @@
     PDFs and return an answer from the desired paper, along with that paper's reference. 
 
     Code adapted from https://learnbybuilding.ai/tutorials/rag-from-scratch
+
+    USAGE:
+        $ python run_pub_rag.py [DATABASE] [INDEX FILE] [QUERY]
 """
 import requests
 import json
 import sys
 import re
 import os
+import time
+
+import sqlite3
+import numpy as np
+import faiss
+
+from utils import return_best_pub_id, extract_text_from_pdf,  elapsed_time
 
 
-def jaccard_similarity(query, document):
-    """ Calculate jaccard similarity between words
-    """
-    query = query.lower().split(" ")
-    document = document.lower().split(" ")
-    intersection = set(query).intersection(set(document))
-    union = set(query).union(set(document))
-    return len(intersection)/len(union)
-
-
-def return_response(user_input: str, pub_path_list: list):
-    """ Returns highest relevant publication and citation info.
-    """
-    similarities = []
-    for pub_file in pub_path_list:
-        with open(pub_file, "r") as file:
-            pub_text = file.read().replace("\n", " ") 
-            similarity = jaccard_similarity(user_input, pub_text)
-            similarities.append(similarity)
-    best_pub_file = pub_path_list[similarities.index(max(similarities))]
-    with open(best_pub_file, "r") as file:
-        best_pub_text = file.read().replace("\n", " ") 
-        return best_pub_file, best_pub_text
-
-
-def filename_to_citation(filename: str) -> str:
-    """ Reformats filename into citation format. 
-    """
-    year, author = "", ""
-    author = os.path.basename(filename).split(" ")[0]
-    match = re.match(r'.*([0-9]{4}).*', filename)
-    if match is not None: year = match.group(1)
-    citation = f"({author} et al., {year})"
-    return citation
+def validate_user_input(user_input) -> None:
+    db_path, index_path, user_input = user_input
+    if not db_path.endswith(".db"):
+        raise ValueError("Database needs to end in '.db'\n")
+    if not index_path.endswith(".index"):
+        raise ValueError("Database needs to end in '.index'\n")
+    return None
 
 
 if __name__=="__main__":
 
-    user_input = sys.argv[1]
-    pub_dir = "test/corpus"
-    pub_path_list = [os.path.join(pub_dir, f) for f in os.listdir(pub_dir) if f.endswith(".txt")]
+    db_path = sys.argv[1]
+    index_path = sys.argv[2]
+    user_query = sys.argv[3]
 
-    best_pub_file, best_pub_text = return_response(user_input, pub_path_list)
-    citation = filename_to_citation(best_pub_file)
+    # Load database
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Return best match
+    start1 = time.time()
+    best_pub_indices = return_best_pub_id(user_query, index_path)
+    row_id = best_pub_indices[0] + 1
+    end1 = time.time()
+
+    # Extract text info from database and pub PDF
+    start2 = time.time()
+    cursor.execute(f'SELECT author, year, title, filepath FROM papers WHERE id={row_id}')
+    info = cursor.fetchone()
+    citation = (f"({info[0]} et al., {info[1]}: {info[2]})")
+    filepath = info[3]
+    pub_text = extract_text_from_pdf(filepath)
+    end2 = time.time()
 
     # LLM prompt
     prompt = """
     You are a bot that answers scientific questions in simple terms from the citation given. You answer in very short sentences and do not include extra information.
-    This is the best matched paper content: {best_pub_text}
-    The user question is: {user_input}
+    This is the best matched paper content: {pub_text}
+    The user question is: {user_query}
     Formulate an answer to the user based on the best matched paper content and the user input. 
     End by inserting the following citation without reformatting {citation}'.
     """
 
     # Get response from LLM using API call
+    start3 = time.time()
     full_response = []
     url = 'http://localhost:11434/api/generate'
     data = {
         "model": "llama3.1",
-        "prompt": prompt.format(user_input=user_input, best_pub_text=best_pub_text, citation=citation)
+        "prompt": prompt.format(user_query=user_query, pub_text=pub_text, citation=citation)
     }
     headers = {'Content-Type': 'application/json'}
     response = requests.post(url, data=json.dumps(data), headers=headers, stream=True)
@@ -87,3 +87,12 @@ if __name__=="__main__":
     finally:
         response.close()
     print('\n\n', ''.join(full_response))
+    end3 = time.time()
+
+    print("\n------------------------------------------------------------\n",
+          f"Time to find best match: \t{elapsed_time(start1, end1)}\n",
+          f"Time to PDF extraction: \t{elapsed_time(start2, end2)}\n",
+          f"Time to model inference: \t{elapsed_time(start3, end3)}\n",
+          "------------------------------------------------------------\n"
+          )
+    

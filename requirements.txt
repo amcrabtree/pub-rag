@@ -1,3 +1,5 @@
 pandas
 requests
-pdfminer.six[image]
+sentence-transformers
+faiss-cpu
+PyPDF2
