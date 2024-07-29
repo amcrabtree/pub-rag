@@ -1,12 +1,7 @@
 """
     Contains all utilities functions used in repo. 
 """
-import sys
-sys.tracebacklimit = 0
-import re
 import os
-import time
-
 import sqlite3
 import numpy as np
 import faiss
@@ -31,7 +26,7 @@ def extract_text_from_pdf(pdf_path) -> str:
 
 
 
-def extract_metadata_from_pdf(pdf_path: str):
+def extract_metadata_from_pdf(pdf_path: str) -> dict:
     """ Extracts PDF metadata relevant for paper citation.
     """
     with open(pdf_path, 'rb') as file:
