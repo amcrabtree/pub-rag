@@ -3,3 +3,8 @@ requests
 sentence-transformers
 faiss-cpu
 PyPDF2
+streamlit
+langchain==0.2.12
+wxai-langchain==0.0.4
+langchain-community==0.2.11
+replicate

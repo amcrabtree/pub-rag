@@ -7,6 +7,11 @@ The current version utilizes a vector database to store publication information 
 > [!TIP]
 > If you get a bad response, run your question again and it may produce something better. 
 
+## Streamlit App
+
+Now available! 
+
+[View App]()
 
 
 ## Environment
@@ -92,6 +97,10 @@ python run_pub_rag.py ./test/research_papers.db ./test/faiss_index.index \
 
 ## Acknowledgements
 
- - Props to learnbybuilding.ai for providing a great walkthrough and code to get me going: ["A beginner's guide to building a Retrieval Augmented Generation (RAG) application from scratch" by learnbybuilding.ai](https://learnbybuilding.ai/tutorials/rag-from-scratch)
+ - Props to learnbybuilding.ai for providing a great walkthrough and code to get me going: ["A beginner's guide to building a Retrieval Augmented Generation (RAG) application from scratch"](https://learnbybuilding.ai/tutorials/rag-from-scratch) by learnbybuilding.ai
+
+- Streamlit LLM example tutorial: ["How to build a Llama 2 chatbot](https://blog.streamlit.io/how-to-build-a-llama-2-chatbot/) by Chanin Nantasenamat
+
+- YouTube tutorial on integrating RAG in AI Chatbots with Streamlit: ["Build a Large Language Model AI Chatbot using Retrieval Augmented Generation"](https://www.youtube.com/watch?v=XctooiH0moI)
 
 - ChatGPT for helping identify strategies and explain concepts
