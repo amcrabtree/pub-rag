@@ -10,6 +10,12 @@ import faiss
 from sentence_transformers import SentenceTransformer
 from PyPDF2 import PdfReader
 
+from langchain.document_loaders import PyPDFLoader
+from langchain.indexes import VectorstoreIndexCreator
+from langchain.chains.retrieval import create_retrieval_chain
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
 SBERT_MODEL = SentenceTransformer('all-MiniLM-L6-v2') # Load the SBERT model
 
 
@@ -27,7 +33,6 @@ def extract_text_from_pdf_bytes(bytes) -> str:
 
 
 
-
 def extract_metadata_from_pdf_bytes(bytes) -> dict:
     """ Extracts PDF metadata relevant for paper citation.
     """
@@ -39,12 +44,25 @@ def extract_metadata_from_pdf_bytes(bytes) -> dict:
             "author": info.author,
             "year": str(info.creation_date)[:4]  
         }
-    
 
 
-def embed_pub(bytes) -> np.ndarray:
-    """ Embed publication files (assuming text files)
+
+def embed_pub_sbert(bytes) -> np.ndarray:
+    """ Embed publication files (assuming text files) using SBERT
     """
     pub_text = extract_text_from_pdf_bytes(bytes)
     embeddings = SBERT_MODEL.encode([pub_text])
     return embeddings
+
+
+
+@st.cache_resource
+def load_pdf(pdf_name):
+    """ Embed publication files (assuming text files) using SBERT
+    """
+    loaders = [PyPDFLoader(pdf_name)]
+    index = VectorstoreIndexCreator(
+        embedding = HuggingFaceEmbeddings(model_name='all-MiniLM-L12-v2'),
+        text_splitter=RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=0)
+    ).from_loaders(loaders)
+    return index
