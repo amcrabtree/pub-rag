@@ -34,7 +34,7 @@ with st.sidebar:
 # Connect to the SQLite database
 if uploaded_db:
     if st.button("Display database"):
-        conn = sqlite3.connect('papers_db.sqlite')
+        conn = sqlite3.connect('test/papers_db.sqlite')
         c = conn.cursor()
         c.execute('''
         CREATE TABLE IF NOT EXISTS papers (
@@ -47,7 +47,7 @@ if uploaded_db:
         )
         ''')
 
-        with open("papers_db.sqlite", "wb") as f:
+        with open("test/papers_db.sqlite", "wb") as f:
             f.write(uploaded_db.getbuffer())
     
         st.write("Your database:")

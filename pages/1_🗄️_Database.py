@@ -17,7 +17,7 @@ uploaded_pdf_files = st.file_uploader("Upload all your target PDFs here.",
 
 if uploaded_pdf_files:
     # Make database
-    conn = sqlite3.connect('papers_db.sqlite')
+    conn = sqlite3.connect('test/papers_db.sqlite')
     c = conn.cursor()
     c.execute('''
     CREATE TABLE IF NOT EXISTS papers (
@@ -58,7 +58,7 @@ if uploaded_pdf_files:
         st.dataframe(df, hide_index=True) 
 
     with st.sidebar:
-        with open("papers_db.sqlite", "rb") as file:
+        with open("test/papers_db.sqlite", "rb") as file:
             st.download_button(
                 label="Download Database",
                 data=file,
